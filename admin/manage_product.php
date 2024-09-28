@@ -9,7 +9,7 @@ if($_SESSION['ADMIN_ROLE']==1){
 }
 $categories_id='';
 $name='';
-$mrp='';
+$oldprice='';
 $price='';
 $qty='';
 $image='';
@@ -33,7 +33,7 @@ if(isset($_GET['id']) && $_GET['id']!=''){
 		$categories_id=$row['categories_id'];
 		$sub_categories_id=$row['sub_categories_id'];
 		$name=$row['name'];
-		$mrp=$row['mrp'];
+		$oldprice=$row['oldprice'];
 		$price=$row['price'];
 		$qty=$row['qty'];
 		$short_desc=$row['short_desc'];
@@ -52,7 +52,7 @@ if(isset($_POST['submit'])){
 	$categories_id=get_safe_value($con,$_POST['categories_id']);
 	$sub_categories_id=get_safe_value($con,$_POST['sub_categories_id']);
 	$name=get_safe_value($con,$_POST['name']);
-	$mrp=get_safe_value($con,$_POST['mrp']);
+	$oldprice=get_safe_value($con,$_POST['oldprice']);
 	$price=get_safe_value($con,$_POST['price']);
 	$qty=get_safe_value($con,$_POST['qty']);
 	$short_desc=get_safe_value($con,$_POST['short_desc']);
@@ -94,15 +94,15 @@ if(isset($_POST['submit'])){
 			if($_FILES['image']['name']!=''){
 				$image=rand(111111111,999999999).'_'.$_FILES['image']['name'];
 				move_uploaded_file($_FILES['image']['tmp_name'],PRODUCT_IMAGE_SERVER_PATH.$image);
-				$update_sql="update product set categories_id='$categories_id',name='$name',mrp='$mrp',price='$price',qty='$qty',short_desc='$short_desc',description='$description',meta_title='$meta_title',meta_desc='$meta_desc',meta_keyword='$meta_keyword',image='$image',best_seller='$best_seller',sub_categories_id='$sub_categories_id' where id='$id'";
+				$update_sql="update product set categories_id='$categories_id',name='$name',oldprice='$oldprice',price='$price',qty='$qty',short_desc='$short_desc',description='$description',meta_title='$meta_title',meta_desc='$meta_desc',meta_keyword='$meta_keyword',image='$image',best_seller='$best_seller',sub_categories_id='$sub_categories_id' where id='$id'";
 			}else{
-				$update_sql="update product set categories_id='$categories_id',name='$name',mrp='$mrp',price='$price',qty='$qty',short_desc='$short_desc',description='$description',meta_title='$meta_title',meta_desc='$meta_desc',meta_keyword='$meta_keyword',best_seller='$best_seller',sub_categories_id='$sub_categories_id' where id='$id'";
+				$update_sql="update product set categories_id='$categories_id',name='$name',oldprice='$oldprice',price='$price',qty='$qty',short_desc='$short_desc',description='$description',meta_title='$meta_title',meta_desc='$meta_desc',meta_keyword='$meta_keyword',best_seller='$best_seller',sub_categories_id='$sub_categories_id' where id='$id'";
 			}
 			mysqli_query($con,$update_sql);
 		}else{
 			$image=rand(111111111,999999999).'_'.$_FILES['image']['name'];
 			move_uploaded_file($_FILES['image']['tmp_name'],PRODUCT_IMAGE_SERVER_PATH.$image);
-			mysqli_query($con,"insert into product(categories_id,name,mrp,price,qty,short_desc,description,meta_title,meta_desc,meta_keyword,status,image,best_seller,sub_categories_id,added_by) values('$categories_id','$name','$mrp','$price','$qty','$short_desc','$description','$meta_title','$meta_desc','$meta_keyword',1,'$image','$best_seller','$sub_categories_id','".$_SESSION['ADMIN_ID']."')");
+			mysqli_query($con,"insert into product(categories_id,name,oldprice,price,qty,short_desc,description,meta_title,meta_desc,meta_keyword,status,image,best_seller,sub_categories_id,added_by) values('$categories_id','$name','$oldprice','$price','$qty','$short_desc','$description','$meta_title','$meta_desc','$meta_keyword',1,'$image','$best_seller','$sub_categories_id','".$_SESSION['ADMIN_ID']."')");
 		}
 		header('location:product.php');
 		die();
@@ -165,8 +165,8 @@ if(isset($_POST['submit'])){
 									</select>
 								</div>
 								<div class="form-group">
-									<label for="categories" class=" form-control-label">MRP</label>
-									<input type="text" name="mrp" placeholder="Enter product mrp" class="form-control" required value="<?php echo $mrp?>">
+									<label for="categories" class=" form-control-label">Old price</label>
+									<input type="text" name="oldprice" placeholder="Enter product oldprice" class="form-control" required value="<?php echo $oldprice?>">
 								</div>
 								
 								<div class="form-group">

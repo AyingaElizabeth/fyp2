@@ -83,7 +83,7 @@ $rating = $get_product['0']['Rating'];
                                 </ul>
                                 <ul  class="pro__prize">
                                     <li class="old__prize"><?php echo $get_product['0']['oldprice']?></li>
-                                    <li>₹ <?php echo $get_product['0']['price']?></li>
+                                    <li>UGX <?php echo $get_product['0']['price']?></li>
                                 </ul>
                                 <p class="pro__info"><?php echo $get_product['0']['short_desc']?></p>
                                 <div class="ht__pro__desc">

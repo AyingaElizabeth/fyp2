@@ -27,7 +27,7 @@ $script_name=$_SERVER['SCRIPT_NAME'];
 $script_name_arr=explode('/',$script_name);
 $mypage=$script_name_arr[count($script_name_arr)-1];
 
-$meta_title="AgroTech";
+$meta_title="WeFarm";
 $meta_desc="Best and direct acrigulture shop website";
 $meta_keyword="My Ecom Website";
 if($mypage=='product.php'){
@@ -47,7 +47,7 @@ if($mypage=='product.php'){
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title><?php echo $meta_title?></title>
-	<link rel="icon" href="images/favicon.ico" type="image/icon type">
+	<link rel="icon" href="images/farmicon.png" type="image/icon type">
     <meta name="description" content="<?php echo $meta_desc?>">
 	<meta name="keywords" content="<?php echo $meta_keyword?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">

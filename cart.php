@@ -32,7 +32,7 @@ require('top.php');
                                         <tr>
                                             <th class="product-thumbnail">products</th>
                                             <th class="product-name">name of products</th>
-                                            <th class="product-price">Price(₹)</th>
+                                            <th class="product-price">Price(UGX)</th>
                                             <th class="product-quantity">Quantity</th>
                                             <th class="product-subtotal">Total</th>
                                             <th class="product-remove">Remove</th>
@@ -45,7 +45,7 @@ require('top.php');
                                             $productArr=get_product($con,'','',$key);
                                             $pid = $productArr[0]['id'];
 											$pname=$productArr[0]['name'];
-											$mrp=$productArr[0]['mrp'];
+											$oldprice=$productArr[0]['oldprice'];
 											$price=$productArr[0]['price'];
 											$image=$productArr[0]['image'];
 											$qty=$val['qty'];
@@ -54,7 +54,7 @@ require('top.php');
 												<td class="product-thumbnail"><a href="<?php echo 'product.php?id='.$pid ?>"><img src="<?php echo PRODUCT_IMAGE_SITE_PATH.$image?>"  /></a></td>
 												<td class="product-name"><a href="<?php echo 'product.php?id='.$pid ?>"><?php echo $pname?></a>
 													<ul  class="pro__prize">
-														<li class="old__prize"><?php echo $mrp?></li>
+														<li class="old__prize"><?php echo $oldprice?></li>
 														<li><?php echo $price?></li>
 													</ul>
 												</td>

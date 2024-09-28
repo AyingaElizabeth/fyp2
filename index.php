@@ -90,7 +90,7 @@
                                     <div class="fr__product__inner">
                                         <h4><a href="product.php?id=<?php echo $list['id']?>"><?php echo $list['name']?></a></h4>
                                         <ul class="fr__pro__prize">
-                                            <li class="old__prize"><?php echo $list['oldpricr']?></li>
+                                            <li class="old__prize"><?php echo $list['oldprice']?></li>
                                             <li><?php echo $list['price']?></li>
                                         </ul>
                                     </div>
@@ -203,7 +203,7 @@
                                     <div class="fr__product__inner">
                                         <h4><a href="product.php?id=<?php echo $list['id']?>"><?php echo $list['name']?></a></h4>
                                         <ul class="fr__pro__prize">
-                                            <li class="old__prize"><?php echo $list['oldpricr']?></li>
+                                            <li class="old__prize"><?php echo $list['oldprice']?></li>
                                             <li><?php echo $list['price']?></li>
                                         </ul>
                                     </div>

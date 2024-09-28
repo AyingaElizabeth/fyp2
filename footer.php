@@ -8,8 +8,8 @@
                             <div class="footer">
                                 <h2 class="title__line--2">ABOUT US</h2>
                                 <div class="ft__details">
-                                    <p>At AgroTech, we strive to work for strengthening the backbone of our country, for the benefit of farmers. 
-AgroTech works to give them the fair share of money for the hardwork they do, by eliminating the role of middlemen.</p>
+                                    <p>At WeFarm, we strive to work for strengthening the backbone of our country, for the benefit of farmers. 
+WeFarm works to give them the fair share of money for the hardwork they do, by eliminating the role of middlemen.</p>
                                     <div class="ft__social__link">
                                         <ul class="social__link">
                                             <li><a href="#"><i class="icon-social-twitter icons"></i></a></li>
@@ -101,7 +101,7 @@ AgroTech works to give them the fair share of money for the hardwork they do, by
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="copyright__inner">
-                                <p>Copyright© <a href="https://freethemescloud.com/">AgroTech</a> 2020. All right reserved.</p>
+                                <p>Copyright© <a href="https://freethemescloud.com/">WeFarm</a> 2020. All right reserved.</p>
                                 <a href="#"><img src="images/others/shape/paypol.png" alt="payment images"></a>
                             </div>
                         </div>

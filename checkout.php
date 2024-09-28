@@ -113,7 +113,52 @@ if(isset($_POST['submit'])){
 		} elseif(!empty($posted['hash'])) {
 		  $hash = $posted['hash'];
 		  $action = $PAYU_BASE_URL . '/_payment';
-		}
+		} elseif($payment_type=='mtn_momo') {
+			// MTN MoMo API integration
+			$momo_api_url = "https://sandbox.momodeveloper.mtn.com/collection/v1_0/requesttopay";
+			$momo_api_key = "YOUR_MTN_MOMO_API_KEY";
+			$momo_subscription_key = "YOUR_MTN_MOMO_SUBSCRIPTION_KEY";
+			
+			$momo_payload = array(
+					"amount" => $total_price,
+					"currency" => "EUR",
+					"externalId" => $txnid,
+					"payer" => array(
+							"partyIdType" => "MSISDN",
+							"partyId" => $userArr['mobile']
+					),
+					"payerMessage" => "Payment for order #" . $order_id,
+					"payeeNote" => "Thank you for your purchase"
+			);
+			
+			$ch = curl_init($momo_api_url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($momo_payload));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'Content-Type: application/json',
+					'Authorization: Bearer ' . $momo_api_key,
+					'X-Reference-Id: ' . $txnid,
+					'X-Target-Environment: sandbox',
+					'Ocp-Apim-Subscription-Key: ' . $momo_subscription_key
+			));
+			
+			$response = curl_exec($ch);
+			curl_close($ch);
+			
+			$result = json_decode($response, true);
+			
+			if(isset($result['status']) && $result['status'] == 'SUCCESS'){
+					// Payment initiated successfully
+					header("Location: momo_payment_status.php?order_id=" . $order_id);
+					exit();
+			} else {
+					// Payment initiation failed
+					echo "MTN MoMo payment initiation failed. Please try again.";
+			}
+	}
+}
+?>
 
 
 		$formHtml ='<form method="post" name="payuForm" id="payuForm" action="'.$action.'"><input type="hidden" name="key" value="'.$MERCHANT_KEY.'" /><input type="hidden" name="hash" value="'.$hash.'"/><input type="hidden" name="txnid" value="'.$posted['txnid'].'" /><input name="amount" type="hidden" value="'.$posted['amount'].'" /><input type="hidden" name="firstname" id="firstname" value="'.$posted['firstname'].'" /><input type="hidden" name="email" id="email" value="'.$posted['email'].'" /><input type="hidden" name="phone" value="'.$posted['phone'].'" /><textarea name="productinfo" style="display:none;">'.$posted['productinfo'].'</textarea><input type="hidden" name="surl" value="'.SITE_PATH.'payment_complete.php" /><input type="hidden" name="furl" value="'.SITE_PATH.'payment_fail.php"/><input type="submit" style="display:none;"/></form>';
@@ -128,7 +173,7 @@ if(isset($_POST['submit'])){
 		<?php
 	}	
 	
-}
+
 ?>
 
 <div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(images/bg/4.jpg) no-repeat scroll center center / cover ;">
@@ -258,8 +303,9 @@ if(isset($_POST['submit'])){
 										<div class="accordion__body">
 											<div class="paymentinfo">
 												<div class="single-method">
-													COD <input type="radio" name="payment_type" value="COD" required/>
-													&nbsp;&nbsp;PayU <input type="radio" name="payment_type" value="payu" required/>
+												<input type="radio" name="payment_type" value="COD" required/>Cash On Delivery 
+													&nbsp;&nbsp;<input type="radio" name="payment_type" value="payu" required/>PayU 
+													<input type="radio" name="payment_type" value="mtn_momo" required/>MTN momo
 												</div>
 												<div class="single-method">
 												  
@@ -281,7 +327,7 @@ if(isset($_POST['submit'])){
 								foreach($_SESSION['cart'] as $key=>$val){
 								$productArr=get_product($con,'','',$key);
 								$pname=$productArr[0]['name'];
-								$mrp=$productArr[0]['mrp'];
+								$oldprice=$productArr[0]['oldprice'];
 								$price=$productArr[0]['price'];
 								$image=$productArr[0]['image'];
 								$qty=$val['qty'];

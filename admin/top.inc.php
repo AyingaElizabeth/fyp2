@@ -68,6 +68,21 @@ if(isset($_SESSION['ADMIN_LOGIN']) && $_SESSION['ADMIN_LOGIN']!=''){
 				  <li class="menu-item-has-children dropdown">
                      <a href="contact_us.php" > Contact Us</a>
                   </li>
+                  <li class="menu-item-has-children dropdown">
+                     <a href="weather.php" > Weather</a>
+                  </li> 
+                  <li class="menu-item-has-children dropdown">
+                    <a href="pest_view.php">Agri tips</a>
+                </li>
+            </ul>
+            </li>
+
+               
+                </li>
+            </ul>
+        </li>
+        
+                  </li>
 				  <?php } ?>
                </ul>
             </div>
