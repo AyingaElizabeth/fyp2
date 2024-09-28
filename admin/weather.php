@@ -8,7 +8,7 @@ $units = 'metric'; // Use 'imperial' for Fahrenheit
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST['city'])) {
     $city = urlencode($_POST['city']);
 } else {
-    $city = urlencode('New York'); // Default city
+    $city = urlencode('kampala'); // Default city
 }
 
 $current_weather_url = "http://api.openweathermap.org/data/2.5/weather?q={$city}&appid={$api_key}&units={$units}";
@@ -65,8 +65,15 @@ function get_weather_icon($icon_code) {
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center mb-4">Weather Search</h1>
+    
+    <div class="content pb-0">
+	<div class="orders">
+	   <div class="row">
+		  <div class="col-xl-12">
+			 <div class="card">
+				<div class="card-body">
+				   <h4 class="box-title"> Weather Forecast </h4>
+        <h2 class="text-center mb-4">Weather Search</h2>
         
         <form method="post" class="mb-4">
             <div class="input-group">
@@ -118,7 +125,7 @@ function get_weather_icon($icon_code) {
                 ?>
                     <div class="col-md-4 col-lg-2 mb-3">
                         <div class="card">
-                            <div class="card-body text-center">
+                            <div class="card-body text-center .bg-primary-subtle">
                                 <h5 class="card-title"><?php echo date('D', strtotime($date)); ?></h5>
                                 <i class="<?php echo get_weather_icon($day['weather'][0]['icon']); ?> weather-icon mb-2"></i>
                                 <p class="card-text"><?php echo $day['main']['temp']; ?>°C</p>
@@ -134,7 +141,15 @@ function get_weather_icon($icon_code) {
             </div>
         <?php endif; ?>
     </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<?php
+require('footer.inc.php');
+?>

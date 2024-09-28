@@ -11,6 +11,7 @@
 
 </head>
     <body>
+        
       <div class="cardbox">
     <div class="wrapper">
         <!-- Sidebar  -->
@@ -64,11 +65,13 @@
 
                 
                 ?>    
-            <div class="line"></div>
-            <div class="row">
-            <div class="col-md-12 ssm">
-            <div class="card">
-            <p class="card-header sammac-media">Add Agricultral Tips </p>    
+          
+            <div class="content pb-0">
+            <div class="animated fadeIn">
+               <div class="row">
+                  <div class="col-lg-12">
+                     <div class="card">
+                        <div class="card-header"><strong>Add Agriculture tip</strong><small> Form</small></div>  
             <div class="card-body">
               <form action="pest_add.php" method="post">
              <div class="row">

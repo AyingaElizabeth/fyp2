@@ -13,13 +13,16 @@ require('top.inc.php');
     <div class="wrapper">
         <!-- Sidebar  -->
    
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="row">
-            <div class="col-md-12 ssm">
-            <div class="card">
-            <p class="card-header">All Tips</p>   
-            <h4 class="box-link"><a href="pest_add.php">Add view</a> </h4> 
+        <div class="content pb-0">
+            <div class="animated fadeIn">
+               <div class="row">
+                  <div class="col-lg-12">
+                     <div class="card">
+            <div class="card-body">
+				   <h4 class="box-title">AGriculture tips </h4>
+                   <h4 class="box-link"><a href="pest_add.php">Add view</a> </h4>
+				</div> 
+            
             <div class="card-body">
               <div id="tabs-4"><table class="table table-striped thead-dark table-bordered table-hover" id="mhishi">
                 <thead>
