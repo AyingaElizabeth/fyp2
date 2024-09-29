@@ -1,11 +1,20 @@
 <?php
+ob_start();
 require('connection.inc.php');
 require('functions.inc.php');
-if(isset($_SESSION['ADMIN_LOGIN']) && $_SESSION['ADMIN_LOGIN']!=''){
 
-}else{
-	header('location:login.php');
-	die();
+if(!isset($_SESSION['ADMIN_LOGIN']) || $_SESSION['ADMIN_LOGIN'] == ''){
+    header('location:login.php');
+    exit();
+}
+
+$admin_username = htmlspecialchars($_SESSION['ADMIN_USERNAME']);
+$admin_role = isset($_SESSION['ADMIN_ROLE']) ? $_SESSION['ADMIN_ROLE'] : 0;
+
+// Don't close the PHP tag here
+// Function to output menu items based on admin role
+function outputMenuItem($href, $text) {
+    echo "<li class=\"menu-item-has-children dropdown\"><a href=\"$href\">$text</a></li>";
 }
 ?>
 <!doctype html>
@@ -33,19 +42,21 @@ if(isset($_SESSION['ADMIN_LOGIN']) && $_SESSION['ADMIN_LOGIN']!=''){
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                <ul class="nav navbar-nav">
                   <li class="menu-title">Menu</li>
+                  <li class="menu-item-has-children dropdown">
+                     <a href="index.php" > Home</a>
+                  </li>
                   
 				  <li class="menu-item-has-children dropdown">
                      <a href="product.php" > Product Master</a>
                   </li>
 				  <li class="menu-item-has-children dropdown">
-                     <?php 
+              <?php 
 					 if($_SESSION['ADMIN_ROLE']==1){
 						echo '<a href="order_master_vendor.php" > Order Master</a>';
 					 }else{
 						echo '<a href="order_master.php" > Order Master</a>';
 					 }
 					 ?>
-					 
 					 
                   </li>
 				  <?php if($_SESSION['ADMIN_ROLE']!=1){?>
@@ -68,8 +79,9 @@ if(isset($_SESSION['ADMIN_LOGIN']) && $_SESSION['ADMIN_LOGIN']!=''){
 				  <li class="menu-item-has-children dropdown">
                      <a href="contact_us.php" > Contact Us</a>
                   </li>
+               
                   <li class="menu-item-has-children dropdown">
-                     <a href="weather.php" > Weather</a>
+                     <a href="weather.php" > Weather Updates</a>
                   </li> 
                   <li class="menu-item-has-children dropdown">
                     <a href="pest_view.php">Agri tips</a>
@@ -77,15 +89,6 @@ if(isset($_SESSION['ADMIN_LOGIN']) && $_SESSION['ADMIN_LOGIN']!=''){
                 <li class="menu-item-has-children dropdown">
                     <a href="resources_blog.php">Common Advisory Extension</a>
                 </li>
-            </ul>
-            </li>
-
-               
-                </li>
-            </ul>
-        </li>
-        
-                  </li>
 				  <?php } ?>
                </ul>
             </div>
@@ -95,18 +98,14 @@ if(isset($_SESSION['ADMIN_LOGIN']) && $_SESSION['ADMIN_LOGIN']!=''){
          <header id="header" class="header">
             <div class="top-left">
                <div class="navbar-header">
-                  <a class="navbar-brand" href="index.php"><img src="../images/farmicon.png" alt="Logo" width="40px" height="40px"></a>
-                  <a class="navbar-brand hidden" href="index.php"><img src="images/logo2.png" alt="Logo" width="40px" height="40px"></a>
+                  <a class="navbar-brand" href="index.php"><img src="images/logo5.png" alt="Logo"></a>
+                  <a class="navbar-brand hidden" href="index.php"><img src="images/logo2.png" alt="Logo"></a>
                   <a id="menuToggle" class="menutoggle"><i class="fa fa-bars"></i></a>
                </div>
-               
             </div>
             <div class="top-right">
-            
                <div class="header-menu">
-            
                   <div class="user-area dropdown float-right">
-                 
                      <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome <?php echo $_SESSION['ADMIN_USERNAME']?></a>
                      <div class="user-menu dropdown-menu">
                         <a class="nav-link" href="logout.php"><i class="fa fa-power-off"></i>Logout</a>

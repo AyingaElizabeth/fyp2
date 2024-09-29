@@ -1,8 +1,15 @@
 <?php
-function pr($arr){
-	echo '<pre>';
-	print_r($arr);
-}
+
+// Check if the file has already been included
+if (!defined('FUNCTIONS_INCLUDED')) {
+    define('FUNCTIONS_INCLUDED', true);
+
+    function pr($arr) {
+        echo '<pre>';
+        print_r($arr);
+        echo '</pre>';
+    }
+
 
 function prx($arr){
 	echo '<pre>';
@@ -210,5 +217,6 @@ function isAdmin(){
 		</script>
 		<?php
 	}
+}
 }
 ?>

@@ -74,8 +74,8 @@
                                 $rating = $list['Rating']
 							?>
                             <!-- Start Single Category -->
-                            <div class="col-md-4 col-lg-3 col-sm-4 col-xs-12">
-                                <div class="category">
+                            <div class=" card col-lg-3 col-sm-4 col-xs-12 mb-4">
+                                <div class="category ">
                                     <div class="ht__cat__thumb">
                                         <a href="product.php?id=<?php echo $list['id']?>">
                                             <img src="<?php echo PRODUCT_IMAGE_SITE_PATH.$list['image']?>" alt="product images">
@@ -88,10 +88,14 @@
 										</ul>
 									</div>
                                     <div class="fr__product__inner">
-                                        <h4><a href="product.php?id=<?php echo $list['id']?>"><?php echo $list['name']?></a></h4>
+                                    <?php $qty = "(Price per Kilo)"; ?>
+                                        <h4><a href="product.php?id=<?php echo $list['id']?>"><?php echo $list['name']?> <?php echo $qty?></a></h4>
                                         <ul class="fr__pro__prize">
-                                            <li class="old__prize"><?php echo $list['oldprice']?></li>
-                                            <li><?php echo $list['price']?></li>
+                                        <?php $oldPriceLabel = "Old price:"; 
+                                        $newprice="Now at:"?>
+                                            <li class="old__prize"><?php echo $oldPriceLabel; ?> <?php echo $list['oldprice']?></li>
+                                            <li><?php echo $newprice; ?> <?php echo $list['price']?></li>
+                                            
                                         </ul>
                                     </div>
                                     <h4>Rating: </h4>
@@ -201,10 +205,13 @@
 										</ul>
 									</div>
                                     <div class="fr__product__inner">
-                                        <h4><a href="product.php?id=<?php echo $list['id']?>"><?php echo $list['name']?></a></h4>
+                                    <?php $qty = "(Price per Kilo)"; ?>
+                                    <h4><a href="product.php?id=<?php echo $list['id']?>"><?php echo $list['name']?> <?php echo $qty?></a></h4>
                                         <ul class="fr__pro__prize">
-                                            <li class="old__prize"><?php echo $list['oldprice']?></li>
-                                            <li><?php echo $list['price']?></li>
+                                        <?php $oldPriceLabel = "Old price:"; 
+                                        $newprice="Now at:"?>
+                                            <li class="old__prize"><?php echo $oldPriceLabel; ?> <?php echo $list['oldprice']?></li>
+                                            <li><?php echo $newprice; ?> <?php echo $list['price']?></li>
                                         </ul>
                                     </div>
                                 </div>

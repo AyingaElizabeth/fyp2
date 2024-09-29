@@ -1,13 +1,20 @@
 <?php
-session_start();
-#Local connections
+// Conditional session start
+if (!defined('SESSION_STARTED')) {
+    session_start();
+    define('SESSION_STARTED', true);
+}
 
+
+// Database connection code here...
 #Remote connection
 $con=mysqli_connect("localhost","root","","ecom");
-define('SERVER_PATH',$_SERVER['DOCUMENT_ROOT'].'/Agrotech');
-define('SITE_PATH','https://agro-tech.herokuapp.com/');
 
-define('PRODUCT_IMAGE_SERVER_PATH',SERVER_PATH.'/media/product/');
-define('PRODUCT_IMAGE_SITE_PATH',SITE_PATH.'/media/product/');
-date_default_timezone_set("Asia/Kolkata");
+// Define constants only if they're not already defined
+if (!defined('SERVER_PATH')) define('SERVER_PATH', $_SERVER['DOCUMENT_ROOT'].'/fyp2/');
+if (!defined('SITE_PATH')) define('SITE_PATH', 'http://localhost/your_project_folder/');
+if (!defined('PRODUCT_IMAGE_SERVER_PATH')) define('PRODUCT_IMAGE_SERVER_PATH', SERVER_PATH.'media/product/');
+if (!defined('PRODUCT_IMAGE_SITE_PATH')) define('PRODUCT_IMAGE_SITE_PATH', SITE_PATH.'media/product/');
+
+date_default_timezone_set("Africa/Kampala");
 ?>

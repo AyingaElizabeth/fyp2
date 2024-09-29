@@ -1,114 +1,134 @@
 <?php
 require('top.inc.php');
 
-$condition='';
-$condition1='';
-if($_SESSION['ADMIN_ROLE']==1){
-	$condition=" and product.added_by='".$_SESSION['ADMIN_ID']."'";
-	$condition1=" and added_by='".$_SESSION['ADMIN_ID']."'";
-}
-$categories_id='';
-$name='';
-$oldprice='';
-$price='';
-$qty='';
-$image='';
-$short_desc	='';
-$description	='';
-$meta_title	='';
-$meta_desc	='';
-$meta_keyword='';
-$best_seller='';
-$sub_categories_id='';
-
-$msg='';
-$image_required='required';
-if(isset($_GET['id']) && $_GET['id']!=''){
-	$image_required='';
-	$id=get_safe_value($con,$_GET['id']);
-	$res=mysqli_query($con,"select * from product where id='$id' $condition1");
-	$check=mysqli_num_rows($res);
-	if($check>0){
-		$row=mysqli_fetch_assoc($res);
-		$categories_id=$row['categories_id'];
-		$sub_categories_id=$row['sub_categories_id'];
-		$name=$row['name'];
-		$oldprice=$row['oldprice'];
-		$price=$row['price'];
-		$qty=$row['qty'];
-		$short_desc=$row['short_desc'];
-		$description=$row['description'];
-		$meta_title=$row['meta_title'];
-		$meta_desc=$row['meta_desc'];
-		$meta_keyword=$row['meta_keyword'];
-		$best_seller=$row['best_seller'];
-	}else{
-		header('location:product.php');
-		die();
-	}
+$condition = '';
+$condition1 = '';
+if ($_SESSION['ADMIN_ROLE'] == 1) {
+    $condition = " AND product.added_by='" . $_SESSION['ADMIN_ID'] . "'";
+    $condition1 = " AND added_by='" . $_SESSION['ADMIN_ID'] . "'";
 }
 
-if(isset($_POST['submit'])){
-	$categories_id=get_safe_value($con,$_POST['categories_id']);
-	$sub_categories_id=get_safe_value($con,$_POST['sub_categories_id']);
-	$name=get_safe_value($con,$_POST['name']);
-	$oldprice=get_safe_value($con,$_POST['oldprice']);
-	$price=get_safe_value($con,$_POST['price']);
-	$qty=get_safe_value($con,$_POST['qty']);
-	$short_desc=get_safe_value($con,$_POST['short_desc']);
-	$description=get_safe_value($con,$_POST['description']);
-	$meta_title=get_safe_value($con,$_POST['meta_title']);
-	$meta_desc=get_safe_value($con,$_POST['meta_desc']);
-	$meta_keyword=get_safe_value($con,$_POST['meta_keyword']);
-	$best_seller=get_safe_value($con,$_POST['best_seller']);
-	
-	$res=mysqli_query($con,"select * from product where name='$name' and $condition1");
-	$check=mysqli_num_rows($res);
-	if($check>0){
-		if(isset($_GET['id']) && $_GET['id']!=''){
-			$getData=mysqli_fetch_assoc($res);
-			if($id==$getData['id']){
-			
-			}else{
-				$msg="Product already exist";
-			}
-		}else{
-			$msg="Product already exist";
-		}
-	}
-	
-	if(isset($_GET['id']) && $_GET['id']==0){
-		if($_FILES['image']['type']!='image/png' && $_FILES['image']['type']!='image/jpg' && $_FILES['image']['type']!='image/jpeg'){
-			$msg="Please select only png,jpg and jpeg image formate";
-		}
-	}else{
-		if($_FILES['image']['type']!=''){
-				if($_FILES['image']['type']!='image/png' && $_FILES['image']['type']!='image/jpg' && $_FILES['image']['type']!='image/jpeg'){
-				$msg="Please select only png,jpg and jpeg image formate";
-			}
-		}
-	}
-	
-	if($msg==''){
-		if(isset($_GET['id']) && $_GET['id']!=''){
-			if($_FILES['image']['name']!=''){
-				$image=rand(111111111,999999999).'_'.$_FILES['image']['name'];
-				move_uploaded_file($_FILES['image']['tmp_name'],PRODUCT_IMAGE_SERVER_PATH.$image);
-				$update_sql="update product set categories_id='$categories_id',name='$name',oldprice='$oldprice',price='$price',qty='$qty',short_desc='$short_desc',description='$description',meta_title='$meta_title',meta_desc='$meta_desc',meta_keyword='$meta_keyword',image='$image',best_seller='$best_seller',sub_categories_id='$sub_categories_id' where id='$id'";
-			}else{
-				$update_sql="update product set categories_id='$categories_id',name='$name',oldprice='$oldprice',price='$price',qty='$qty',short_desc='$short_desc',description='$description',meta_title='$meta_title',meta_desc='$meta_desc',meta_keyword='$meta_keyword',best_seller='$best_seller',sub_categories_id='$sub_categories_id' where id='$id'";
-			}
-			mysqli_query($con,$update_sql);
-		}else{
-			$image=rand(111111111,999999999).'_'.$_FILES['image']['name'];
-			move_uploaded_file($_FILES['image']['tmp_name'],PRODUCT_IMAGE_SERVER_PATH.$image);
-			mysqli_query($con,"insert into product(categories_id,name,oldprice,price,qty,short_desc,description,meta_title,meta_desc,meta_keyword,status,image,best_seller,sub_categories_id,added_by) values('$categories_id','$name','$oldprice','$price','$qty','$short_desc','$description','$meta_title','$meta_desc','$meta_keyword',1,'$image','$best_seller','$sub_categories_id','".$_SESSION['ADMIN_ID']."')");
-		}
-		header('location:product.php');
-		die();
-	}
+$categories_id = '';
+$name = '';
+$oldprice = '';
+$price = '';
+$qty = '';
+$image = '';
+$short_desc = '';
+$description = '';
+$meta_title = '';
+$meta_desc = '';
+$meta_keyword = '';
+$best_seller = '';
+$sub_categories_id = '';
+
+$msg = '';
+$image_required = 'required';
+
+if (isset($_GET['id']) && $_GET['id'] != '') {
+    $image_required = '';
+    $id = get_safe_value($con, $_GET['id']);
+    $query = "SELECT * FROM product WHERE id=?" . $condition1;
+    $stmt = mysqli_prepare($con, $query);
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    $check = mysqli_num_rows($res);
+    if ($check > 0) {
+        $row = mysqli_fetch_assoc($res);
+        $categories_id = $row['categories_id'];
+        $sub_categories_id = $row['sub_categories_id'];
+        $name = $row['name'];
+        $oldprice = $row['oldprice'];
+        $price = $row['price'];
+        $qty = $row['qty'];
+        $short_desc = $row['short_desc'];
+        $description = $row['description'];
+        $meta_title = $row['meta_title'];
+        $meta_desc = $row['meta_desc'];
+        $meta_keyword = $row['meta_keyword'];
+        $best_seller = $row['best_seller'];
+    } else {
+        header('location:product.php');
+        die();
+    }
+}
+
+if (isset($_POST['submit'])) {
+    $categories_id = get_safe_value($con, $_POST['categories_id']);
+    $sub_categories_id = get_safe_value($con, $_POST['sub_categories_id']);
+    $name = get_safe_value($con, $_POST['name']);
+    $oldprice = get_safe_value($con, $_POST['oldprice']);
+    $price = get_safe_value($con, $_POST['price']);
+    $qty = get_safe_value($con, $_POST['qty']);
+    $short_desc = get_safe_value($con, $_POST['short_desc']);
+    $description = get_safe_value($con, $_POST['description']);
+    $meta_title = get_safe_value($con, $_POST['meta_title']);
+    $meta_desc = get_safe_value($con, $_POST['meta_desc']);
+    $meta_keyword = get_safe_value($con, $_POST['meta_keyword']);
+    $best_seller = get_safe_value($con, $_POST['best_seller']);
+    
+    $query = "SELECT * FROM product WHERE name=?" . $condition1;
+    $stmt = mysqli_prepare($con, $query);
+    mysqli_stmt_bind_param($stmt, "s", $name);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    $check = mysqli_num_rows($res);
+    
+    if ($check > 0) {
+        if (isset($_GET['id']) && $_GET['id'] != '') {
+            $getData = mysqli_fetch_assoc($res);
+            if ($id == $getData['id']) {
+                // Do nothing
+            } else {
+                $msg = "Product already exists";
+            }
+        } else {
+            $msg = "Product already exists";
+        }
+    }
+    
+    if (isset($_GET['id']) && $_GET['id'] == 0) {
+        if ($_FILES['image']['type'] != 'image/png' && $_FILES['image']['type'] != 'image/jpg' && $_FILES['image']['type'] != 'image/jpeg') {
+            $msg = "Please select only png, jpg and jpeg image format";
+        }
+    } else {
+        if ($_FILES['image']['type'] != '') {
+            if ($_FILES['image']['type'] != 'image/png' && $_FILES['image']['type'] != 'image/jpg' && $_FILES['image']['type'] != 'image/jpeg') {
+                $msg = "Please select only png, jpg and jpeg image format";
+            }
+        }
+    }
+    
+    if ($msg == '') {
+        if (isset($_GET['id']) && $_GET['id'] != '') {
+            if ($_FILES['image']['name'] != '') {
+                $image = rand(111111111, 999999999) . '_' . $_FILES['image']['name'];
+                move_uploaded_file($_FILES['image']['tmp_name'], PRODUCT_IMAGE_SERVER_PATH . $image);
+                $update_sql = "UPDATE product SET categories_id=?, name=?, oldprice=?, price=?, qty=?, short_desc=?, description=?, meta_title=?, meta_desc=?, meta_keyword=?, image=?, best_seller=?, sub_categories_id=? WHERE id=?";
+                $stmt = mysqli_prepare($con, $update_sql);
+                mysqli_stmt_bind_param($stmt, "sssssssssssssi", $categories_id, $name, $oldprice, $price, $qty, $short_desc, $description, $meta_title, $meta_desc, $meta_keyword, $image, $best_seller, $sub_categories_id, $id);
+            } else {
+                $update_sql = "UPDATE product SET categories_id=?, name=?, oldprice=?, price=?, qty=?, short_desc=?, description=?, meta_title=?, meta_desc=?, meta_keyword=?, best_seller=?, sub_categories_id=? WHERE id=?";
+                $stmt = mysqli_prepare($con, $update_sql);
+                mysqli_stmt_bind_param($stmt, "ssssssssssssi", $categories_id, $name, $oldprice, $price, $qty, $short_desc, $description, $meta_title, $meta_desc, $meta_keyword, $best_seller, $sub_categories_id, $id);
+            }
+            mysqli_stmt_execute($stmt);
+        } else {
+            $image = rand(111111111, 999999999) . '_' . $_FILES['image']['name'];
+            move_uploaded_file($_FILES['image']['tmp_name'], PRODUCT_IMAGE_SERVER_PATH . $image);
+            $insert_sql = "INSERT INTO product(categories_id, name, oldprice, price, qty, short_desc, description, meta_title, meta_desc, meta_keyword, status, image, best_seller, sub_categories_id, added_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($con, $insert_sql);
+            mysqli_stmt_bind_param($stmt, "sssssssssssssi", $categories_id, $name, $oldprice, $price, $qty, $short_desc, $description, $meta_title, $meta_desc, $meta_keyword, $image, $best_seller, $sub_categories_id, $_SESSION['ADMIN_ID']);
+            mysqli_stmt_execute($stmt);
+        }
+        header('location:product.php');
+        die();
+    }
 }
 ?>
+
+
 <div class="content pb-0">
             <div class="animated fadeIn">
                <div class="row">
@@ -165,7 +185,7 @@ if(isset($_POST['submit'])){
 									</select>
 								</div>
 								<div class="form-group">
-									<label for="categories" class=" form-control-label">Old price</label>
+									<label for="categories" class=" form-control-label">Old Price</label>
 									<input type="text" name="oldprice" placeholder="Enter product oldprice" class="form-control" required value="<?php echo $oldprice?>">
 								</div>
 								

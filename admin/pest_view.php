@@ -4,7 +4,7 @@ require('top.inc.php');
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>AgriBoost | Dashboard </title>
+	<title>weFarm| Dashboard </title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -60,7 +60,7 @@ require('top.inc.php');
                        if (isset($_GET['id']) && is_numeric($_GET['idx']))
                       {
                           $id = $_GET['idx'];
-                          if ($stmt = $db->prepare("DELETE FROM agri_tips WHERE id = ? LIMIT 1"))
+                          if ($stmt = $con->prepare("DELETE FROM agri_tips WHERE id = ? LIMIT 1"))
                           {
                               $stmt->bind_param("i",$id);
                               $stmt->execute();
@@ -96,12 +96,7 @@ require('top.inc.php');
   
        
 
-        <script>
-    $(document).ready( function () {
-    $('#mhishi').DataTable();
-           
-    } );
-        </script>
+     
        
    
 </body>
@@ -109,3 +104,5 @@ require('top.inc.php');
 <?php
 require('footer.inc.php');
 ?>
+
+
