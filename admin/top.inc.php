@@ -53,6 +53,14 @@ function outputMenuItem($href, $text) {
               <?php 
 					 if($_SESSION['ADMIN_ROLE']==1){
 						echo '<a href="order_master_vendor.php" > Order Master</a>';
+                  echo'<li class="menu-item-has-children dropdown">
+                     <a href="weather.php" > Weather Updates</a>
+                  </li> 
+                  <li class="menu-item-has-children dropdown">
+                    <a href="pest_view.php">Agri tips</a>
+                </li>
+                <li class="menu-item-has-children dropdown">
+                    <a href="resources_blog.php">Common Advisory Extension</a>';
 					 }else{
 						echo '<a href="order_master.php" > Order Master</a>';
 					 }
