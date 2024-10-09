@@ -1,7 +1,7 @@
 <?php 
 require('top.php');					
 ?>
-<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(images/bg/4.jpg) no-repeat scroll center center / cover ;">
+<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(images/bg/5.jpg) no-repeat scroll center center / cover ;">
             <div class="ht__bradcaump__wrap">
                 <div class="container">
                     <div class="row">
@@ -36,7 +36,7 @@ require('top.php');
                             </div>
                             <div class="address__details">
                                 <h2 class="ct__title">our address</h2>
-                                <p>XYZ Dummy TEXT- ARKARAJ </p>
+                                <p>XYZ u can locate us along Kakiri -Masulita road-liz </p>
                             </div>
                         </div>
                         <div class="address">
@@ -45,7 +45,7 @@ require('top.php');
                             </div>
                             <div class="address__details">
                                 <h2 class="ct__title">openning hour</h2>
-                                <p>XYZ Dummy TEXT- ARKARAJ </p>
+                                <p>7:00am- 7:00pm </p>
                             </div>
                         </div>
 
@@ -55,7 +55,7 @@ require('top.php');
                             </div>
                             <div class="address__details">
                                 <h2 class="ct__title">Phone Number</h2>
-                                <p>123-6586-587456</p>
+                                <p>077-587456</p>
                             </div>
                         </div>
                     </div>      
@@ -112,7 +112,7 @@ require('top.php');
                 scrollwheel: false,
 
                 // The latitude and longitude to center the map (always required)
-                center: new google.maps.LatLng(12.968970, 79.149320), // Vellore
+                center: new google.maps.LatLng(0.4200, 32.3900), // kakiri
 
                 // How you would like to style the map. 
                 // This is where you would paste any style found on Snazzy Maps.
@@ -294,7 +294,7 @@ require('top.php');
 
             // Let's also add a marker while we're at it
             var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(12.968970, 79.149320),
+                position: new google.maps.LatLng(0.4200, 32.3900), // kakiri
                 map: map,
                 title: 'Ramble!',
                 icon: 'images/icons/map-2.png',

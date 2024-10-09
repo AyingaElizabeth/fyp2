@@ -13,7 +13,7 @@ $coupon_details=mysqli_fetch_assoc(mysqli_query($con,"select coupon_value from `
 $coupon_value=$coupon_details['coupon_value'];
 
 ?>
-<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(images/bg/4.jpg) no-repeat scroll center center / cover ;">
+<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(images/bg/5.jpg) no-repeat scroll center center / cover ;">
             <div class="ht__bradcaump__wrap">
                 <div class="container">
                     <div class="row">
