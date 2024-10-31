@@ -257,7 +257,7 @@ if (isset($_POST['submit'])) {
 		 </script>
          
 <?php
-require('footer.inc.php');
+require('footer.inc.php');/////////////////////////////////////////
 ?>
 <script>
 <?php

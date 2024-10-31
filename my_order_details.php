@@ -43,7 +43,7 @@ $coupon_value=$coupon_details['coupon_value'];
                                         <thead>
                                             <tr>
                                                 <th class="product-thumbnail">Product Name</th>
-												<th class="product-thumbnail">Product Image</th>
+												<th class="product-thumbnail">Produ ct Image</th>
                                                 <th class="product-name">Qty</th>
                                                 <th class="product-price">Price</th>
                                                 <th class="product-price">Total Price</th>

@@ -552,7 +552,7 @@ $html='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://ww
                     <td class="content-cell" align="center">
                       <p class="f-fallback sub align-center">&copy; 2019 [Product Name]. All rights reserved.</p>
                       <p class="f-fallback sub align-center">
-                        [AgroTech, LLC]
+                        [WeFarm, LLC]
                         <br>1234 Street Rd.
                         <br>Suite 1234
                       </p>

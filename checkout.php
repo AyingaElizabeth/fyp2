@@ -1,179 +1,135 @@
 <?php 
 require('top.php');
+
+
 if(!isset($_SESSION['cart']) || count($_SESSION['cart'])==0){
-	?>
-	<script>
-		window.location.href='index.php';
-	</script>
-	<?php
+    ?>
+    <script>
+        window.location.href='index.php';
+    </script>
+    <?php
 }
 
 $cart_total=0;
 
 if(isset($_POST['submit'])){
-	$address=get_safe_value($con,$_POST['address']);
-	$city=get_safe_value($con,$_POST['city']);
-	$pincode=get_safe_value($con,$_POST['pincode']);
-	$payment_type=get_safe_value($con,$_POST['payment_type']);
-	$user_id=$_SESSION['USER_ID'];
-	foreach($_SESSION['cart'] as $key=>$val){
-		$productArr=get_product($con,'','',$key);
-		$price=$productArr[0]['price'];
-		$qty=$val['qty'];
-		$cart_total=$cart_total+($price*$qty);
-		
-	}
-	$total_price=$cart_total;
-	$payment_status='pending';
-	if($payment_type=='cod'){
-		$payment_status='success';
-	}
-	$order_status='1';
-	$added_on=date('Y-m-d h:i:s');
-	
-	$txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
-	
-	if(isset($_SESSION['COUPON_ID'])){
-		$coupon_id=$_SESSION['COUPON_ID'];
-		$coupon_code=$_SESSION['COUPON_CODE'];
-		$coupon_value=$_SESSION['COUPON_VALUE'];
-		$total_price=$total_price-$coupon_value;
-		unset($_SESSION['COUPON_ID']);
-		unset($_SESSION['COUPON_CODE']);
-		unset($_SESSION['COUPON_VALUE']);
-	}else{
-		$coupon_id='';
-		$coupon_code='';
-		$coupon_value='';	
-	}	
-	
-	mysqli_query($con,"insert into `order`(user_id,address,city,pincode,payment_type,payment_status,order_status,added_on,total_price,txnid,coupon_id,coupon_code,coupon_value) values('$user_id','$address','$city','$pincode','$payment_type','$payment_status','$order_status','$added_on','$total_price','$txnid','$coupon_id','$coupon_code','$coupon_value')");
-	
-	#$order_id=mysqli_insert_id($con);
-	$order_id=$_SESSION['USER_ID'];
-	
-	foreach($_SESSION['cart'] as $key=>$val){
-		$productArr=get_product($con,'','',$key);
-		$price=$productArr[0]['price'];
-		$qty=$val['qty'];
-		
-		mysqli_query($con,"insert into `order_detail`(order_id,product_id,qty,price) values('$order_id','$key','$qty','$price')");
-	}
-	
-	unset($_SESSION['cart']);
-	
-	if($payment_type=='payu'){
-		$MERCHANT_KEY = "gtKFFx"; 
-		$SALT = "eCwWELxi";
-		$hash_string = '';
-		//$PAYU_BASE_URL = "https://secure.payu.in";
-		$PAYU_BASE_URL = "https://test.payu.in";
-		$action = '';
-		$posted = array();
-		if(!empty($_POST)) {
-		  foreach($_POST as $key => $value) {    
-			$posted[$key] = $value; 
-		  }
-		}
-		
-		$userArr=mysqli_fetch_assoc(mysqli_query($con,"select * from users where id='$user_id'"));
-		
-		$formError = 0;
-		$posted['txnid']=$txnid;
-		$posted['amount']=$total_price;
-		$posted['firstname']=$userArr['name'];
-		$posted['email']=$userArr['email'];
-		$posted['phone']=$userArr['mobile'];
-		$posted['productinfo']="productinfo";
-		$posted['key']=$MERCHANT_KEY ;
-		$hash = '';
-		$hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
-		if(empty($posted['hash']) && sizeof($posted) > 0) {
-		  if(
-				  empty($posted['key'])
-				  || empty($posted['txnid'])
-				  || empty($posted['amount'])
-				  || empty($posted['firstname'])
-				  || empty($posted['email'])
-				  || empty($posted['phone'])
-				  || empty($posted['productinfo'])
-				 
-		  ) {
-			$formError = 1;
-		  } else {    
-			$hashVarsSeq = explode('|', $hashSequence);
-			foreach($hashVarsSeq as $hash_var) {
-			  $hash_string .= isset($posted[$hash_var]) ? $posted[$hash_var] : '';
-			  $hash_string .= '|';
-			}
-			$hash_string .= $SALT;
-			$hash = strtolower(hash('sha512', $hash_string));
-			$action = $PAYU_BASE_URL . '/_payment';
-		  }
-		} elseif(!empty($posted['hash'])) {
-		  $hash = $posted['hash'];
-		  $action = $PAYU_BASE_URL . '/_payment';
-		} elseif($payment_type=='mtn_momo') {
-			// MTN MoMo API integration
-			$momo_api_url = "https://sandbox.momodeveloper.mtn.com/collection/v1_0/requesttopay";
-			$momo_api_key = "YOUR_MTN_MOMO_API_KEY";
-			$momo_subscription_key = "YOUR_MTN_MOMO_SUBSCRIPTION_KEY";
-			
-			$momo_payload = array(
-					"amount" => $total_price,
-					"currency" => "EUR",
-					"externalId" => $txnid,
-					"payer" => array(
-							"partyIdType" => "MSISDN",
-							"partyId" => $userArr['mobile']
-					),
-					"payerMessage" => "Payment for order #" . $order_id,
-					"payeeNote" => "Thank you for your purchase"
-			);
-			
-			$ch = curl_init($momo_api_url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($momo_payload));
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-					'Content-Type: application/json',
-					'Authorization: Bearer ' . $momo_api_key,
-					'X-Reference-Id: ' . $txnid,
-					'X-Target-Environment: sandbox',
-					'Ocp-Apim-Subscription-Key: ' . $momo_subscription_key
-			));
-			
-			$response = curl_exec($ch);
-			curl_close($ch);
-			
-			$result = json_decode($response, true);
-			
-			if(isset($result['status']) && $result['status'] == 'SUCCESS'){
-					// Payment initiated successfully
-					header("Location: momo_payment_status.php?order_id=" . $order_id);
-					exit();
-			} else {
-					// Payment initiation failed
-					echo "MTN MoMo payment initiation failed. Please try again.";
-			}
-	}
+    $address = get_safe_value($con, $_POST['address']); // Use the sanitization function
+    $city = get_safe_value($con, $_POST['city']);
+    $pincode = get_safe_value($con, $_POST['pincode']);
+    $payment_type = get_safe_value($con, $_POST['payment_type']);
+    $user_id = $_SESSION['USER_ID'];
+    
+    foreach($_SESSION['cart'] as $key=>$val){
+        $productArr=get_product($con,'','',$key);
+        $price=$productArr[0]['price'];
+        $qty=$val['qty'];
+        $cart_total=$cart_total+($price*$qty);
+    }
+    
+    $total_price=$cart_total;
+    $payment_status='pending';
+    if($payment_type=='cod'){
+        $payment_status='success';
+    }
+    $order_status='1';
+    $added_on=date('Y-m-d h:i:s');
+    
+    $txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
+    
+    // Handle coupon logic here (if any)
+    
+    $sql = "INSERT INTO `order`(user_id, address, city, pincode, payment_type, payment_status, order_status, added_on, total_price, txnid) VALUES('$user_id', '$address', '$city', '$pincode', '$payment_type', '$payment_status', '$order_status', '$added_on', '$total_price', '$txnid')";
+    mysqli_query($con, $sql);
+    
+    $order_id = mysqli_insert_id($con);
+    $_SESSION['ORDER_ID'] = $order_id;
+    
+    foreach($_SESSION['cart'] as $key=>$val){
+        $productArr=get_product($con,'','',$key);
+        $price=$productArr[0]['price'];
+        $qty=$val['qty'];
+        
+        mysqli_query($con, "INSERT INTO `order_detail`(order_id, product_id, qty, price) VALUES('$order_id', '$key', '$qty', '$price')");
+    }
+    
+    unset($_SESSION['cart']);
+    
+    if($payment_type=='mtn_momo'){
+
+        echo "MTN MoMo payment is under maintenance. Please use the Cash on Delivery payment option.";
+        exit();
+//         // MTN MoMo API integration
+//         $momo_api_url = "https://sandbox.momodeveloper.mtn.com/collection/v1_0/requesttopay";
+//         $momo_api_key = "3ad44dc9450242409cce79944b84a735"; // Replace with your actual API key
+// $momo_subscription_key = "640c59a54b6c415ab5261ccd785930da"; // Replace with your actual subscription key
+        
+//         // Generate a unique UUID for X-Reference-Id
+//         $uuid = sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+//         mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+//         mt_rand(0, 0xffff),
+//         mt_rand(0, 0x0fff) | 0x4000,
+//         mt_rand(0, 0x3fff) | 0x8000,
+//         mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+//     );
+
+
+//         if(!isset($_SESSION['USER_MOBILE'])){
+//             $user_id = $_SESSION['USER_ID'];
+//             $user_query = mysqli_query($con, "SELECT mobile FROM users WHERE id = '$user_id'");
+//             $user_data = mysqli_fetch_assoc($user_query);
+//             $_SESSION['USER_MOBILE'] = $user_data['mobile'];
+//         }
+        
+//         $momo_payload = array(
+//             "amount" => $total_price,
+//             "currency" => "UGX", // Change to your currency
+//             "externalId" => $txnid,
+//             "payer" => array(
+//                 "partyIdType" => "MSISDN",
+//                 "partyId" => $_SESSION['USER_MOBILE'] // Assuming you store user's mobile number in session
+//             ),
+//             "payerMessage" => "Payment for order #" . $order_id,
+//             "payeeNote" => "Thank you for your purchase"
+//         );
+        
+//         $ch = curl_init($momo_api_url);
+//         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//         curl_setopt($ch, CURLOPT_POST, true);
+//         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($momo_payload));
+//         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+//             'Content-Type: application/json',
+//             'Authorization: Bearer ' . $momo_api_key,
+//             'X-Reference-Id: ' . $uuid,
+//             'X-Target-Environment: sandbox',
+//             'Ocp-Apim-Subscription-Key: ' . $momo_subscription_key
+//         ));
+        
+//         $response = curl_exec($ch);
+//         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//         curl_close($ch);
+        
+//         if($http_code == 202){
+//             // Payment request accepted
+//             $_SESSION['MOMO_REF_ID'] = $uuid;
+//             log_momo_response($order_id, $uuid, 'INITIATED', $response); // Log the response
+//             header("Location: momo_payment_status.php?order_id=" . $order_id);
+//             exit();
+//         } else {
+//             // Payment initiation failed
+//             log_momo_response($order_id, $uuid, 'FAILED', $response); // Log the failure
+//             $error_message = "MTN MoMo payment initiation failed. Please try again.";
+//             header("Location: payment_error.php");
+//             exit();
+//         }
+    } else {    
+       // sentInvoice($con, $order_id); // Use the invoice sending function
+        ?>
+        <script>
+            window.location.href='thank_you.php';
+        </script>
+        <?php
+    }    
 }
-?>
-
-
-		$formHtml ='<form method="post" name="payuForm" id="payuForm" action="'.$action.'"><input type="hidden" name="key" value="'.$MERCHANT_KEY.'" /><input type="hidden" name="hash" value="'.$hash.'"/><input type="hidden" name="txnid" value="'.$posted['txnid'].'" /><input name="amount" type="hidden" value="'.$posted['amount'].'" /><input type="hidden" name="firstname" id="firstname" value="'.$posted['firstname'].'" /><input type="hidden" name="email" id="email" value="'.$posted['email'].'" /><input type="hidden" name="phone" value="'.$posted['phone'].'" /><textarea name="productinfo" style="display:none;">'.$posted['productinfo'].'</textarea><input type="hidden" name="surl" value="'.SITE_PATH.'payment_complete.php" /><input type="hidden" name="furl" value="'.SITE_PATH.'payment_fail.php"/><input type="submit" style="display:none;"/></form>';
-		echo $formHtml;
-		echo '<script>document.getElementById("payuForm").submit();</script>';
-	}else{	
-		//sentInvoice($con,$order_id);
-		?>
-		<script>
-			window.location.href='thank_you.php';
-		</script>
-		<?php
-	}	
-	
-
 ?>
 
 <div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(images/bg/4.jpg) no-repeat scroll center center / cover ;">
@@ -303,9 +259,8 @@ if(isset($_POST['submit'])){
 										<div class="accordion__body">
 											<div class="paymentinfo">
 												<div class="single-method">
-												<input type="radio" name="payment_type" value="COD" required/>Cash On Delivery 
-													&nbsp;&nbsp;<input type="radio" name="payment_type" value="payu" required/>PayU 
-													<input type="radio" name="payment_type" value="mtn_momo" required/>MTN momo
+												<input type="radio" name="payment_type" value="COD" required/>Cash On Delivery
+												<input type="radio" name="payment_type" value="mtn_momo" required/>MTN momo
 												</div>
 												<div class="single-method">
 												  

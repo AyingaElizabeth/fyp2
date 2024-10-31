@@ -83,13 +83,13 @@ if(isset($_POST['submit'])){
 										<?php
 										if($coupon_type=='Percentage'){
 											echo '<option value="Percentage" selected>Percentage</option>
-												<option value="Rupee">Rupee</option>';
-										}elseif($coupon_type=='Rupee'){
+												<option value="Ugx">Ugx</option>';
+										}elseif($coupon_type=='Ugx'){
 											echo '<option value="Percentage">Percentage</option>
-												<option value="Rupee" selected>Rupee</option>';
+												<option value="Ugx" selected>Ugx</option>';
 										}else{
 											echo '<option value="Percentage">Percentage</option>
-												<option value="Rupee">Rupee</option>';
+												<option value="Ugx">Ugx</option>';
 										}
 										?>
 									</select>

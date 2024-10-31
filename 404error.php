@@ -1,5 +1,5 @@
 <?php require('top.php')?>
-<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(images/bg/4.jpg) no-repeat scroll center center / cover ;">
+<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(images/bg/5.jpg) no-repeat scroll center center / cover ;">
             <div class="ht__bradcaump__wrap">
                 <div class="container">
                     <div class="row">
@@ -118,7 +118,7 @@
     <b>Sorry the Webpage was not found!</b>
     <!-- <p class="mini">Sorry the Webpage was not found!</p>  -->
     <div class="Home">Lost your Way? Continue Shopping: 
-    <button id="err"><a href="./">AgroTech - Home ➤</a></button> </div>
+    <button id="err"><a href="./">WeFarm - Home ➤</a></button> </div>
 
 </body>
 <script>

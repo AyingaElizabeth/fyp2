@@ -191,7 +191,7 @@ if($mypage=='product.php'){
 													  Hi <?php echo $_SESSION['USER_NAME']?>
 													</a>
 													<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-													  <a class="dropdown-item" href="my_order.php">Order</a>
+													  <a class="dropdown-item" href="my_order.php">My Orders</a>
 													  <a class="dropdown-item" href="profile.php">Profile</a>
 													  <div class="dropdown-divider"></div>
 													  <a class="dropdown-item" href="logout.php">Logout</a>
@@ -278,7 +278,7 @@ if($mypage=='product.php'){
                             <div class="shp__pro__details">
                                 <h2><a href="<?php echo 'product.php?id='.$pid ?>"><?php echo $pname?></a></h2>
                                 <span class="quantity">QTY: <?php echo $qty?></span>
-                                <span class="shp__price">Rs. <?php echo $price*$qty?></span>
+                                <span class="shp__price">UGX. <?php echo $price*$qty?></span>
                             </div>
                             <div class="remove__btn">
                                 <a href="javascript:void(0)" onclick="manage_cart('<?php echo $key?>','remove')" title="Remove this item"><i class="zmdi zmdi-close"></i></a>
@@ -288,7 +288,7 @@ if($mypage=='product.php'){
 											<?php } ?>
 					<ul class="shoping__total">
                         <li class="subtotal">Subtotal:</li>
-                        <li class="total__price"><?php echo $cart_total?> Rs</li>
+                        <li class="total__price"><?php echo $cart_total?> UGX</li>
                     </ul>
 					<?php } else { ?>
 						<center>

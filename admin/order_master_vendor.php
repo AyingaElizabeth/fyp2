@@ -9,6 +9,9 @@ require('top.inc.php');
 				<div class="card-body">
 				   <h4 class="box-title">Order Master </h4>
 				</div>
+				<div class="text-right mb-3">
+        <a href="invoices.php" class="btn btn-primary">View All Invoices</a>
+    </div>
 				<div class="card-body--">
 				   <div class="table-stats order-table ov-h">
 					  <table class="table">
@@ -28,8 +31,8 @@ require('top.inc.php');
 								while($row=mysqli_fetch_assoc($res)){
 								?>
 								<tr>
-									<td class="product-add-to-cart"><?php echo $row['id']?><br/>
-									</td>
+								<td class="product-add-to-cart"><a href="order_master_vendor_details.php?id=<?php echo $row['id']?>"> <?php echo $row['id']?>-ViewOrder</a><br/>
+								<a href="../order_pdf.php?id=<?php echo $row['id']?>">INVOICE PDF</a></td>
 									<td class="product-name">
 									<?php echo $row['name']?><br/>
 									<?php echo $row['qty']?>

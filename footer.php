@@ -101,7 +101,7 @@ WeFarm works to give them the fair share of money for the hardwork they do, by e
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="copyright__inner">
-                                <p>Copyright© <a href="https://freethemescloud.com/">WeFarm</a> 2020. All right reserved.</p>
+                                <p>Copyright© <a href="https://freethemescloud.com/">WeFarm</a> 2024. All right reserved.</p>
                                 <a href="#"><img src="images/others/shape/paypol.png" alt="payment images"></a>
                             </div>
                         </div>

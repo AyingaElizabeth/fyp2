@@ -66,6 +66,10 @@ $rating = $get_product['0']['Rating'];
                             <div class="ht__product__dtl">
                                 <h2><?php echo $get_product['0']['name']?></h2>
                                 <br>
+                                <div class="sin__desc">
+                            <p><span>Sold by:</span> <?php echo $get_product['0']['seller_name']?></p>
+                        </div>
+
                                 <h2>Rating:</h2>
                                 <!-- <h2><?php echo $rating?>/5</h2> -->
                                 <ul class="rating">

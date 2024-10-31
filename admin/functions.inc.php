@@ -218,5 +218,6 @@ function isAdmin(){
 		<?php
 	}
 }
+
 }
 ?>

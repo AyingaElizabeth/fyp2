@@ -43,31 +43,40 @@ function outputMenuItem($href, $text) {
                <ul class="nav navbar-nav">
                   <li class="menu-title">Menu</li>
                   <li class="menu-item-has-children dropdown">
-                     <a href="index.php" > Home</a>
+                     <?php
+                     if($_SESSION['ADMIN_ROLE'] ==1){
+                        echo '<a href="vendor_index.php" > Home</a>';
+                     }else{
+                        echo '<a href="index.php" > Home</a>';
+                     }
+                     ?>
                   </li>
                   
 				  <li class="menu-item-has-children dropdown">
                      <a href="product.php" > Product Master</a>
                   </li>
-				  <li class="menu-item-has-children dropdown">
+				  
               <?php 
-					 if($_SESSION['ADMIN_ROLE']==1){
-						echo '<a href="order_master_vendor.php" > Order Master</a>';
-                  echo'<li class="menu-item-has-children dropdown">
+					 if($_SESSION['ADMIN_ROLE']==1){?>
+                  <li class="menu-item-has-children dropdown">
+						<a href="order_master_vendor.php" > Order Master</a>
+                  </li>
+                  <li class="menu-item-has-children dropdown">
                      <a href="weather.php" > Weather Updates</a>
                   </li> 
-                  <li class="menu-item-has-children dropdown">
-                    <a href="pest_view.php">Agri tips</a>
-                </li>
+                
                 <li class="menu-item-has-children dropdown">
-                    <a href="resources_blog.php">Common Advisory Extension</a>';
-					 }else{
-						echo '<a href="order_master.php" > Order Master</a>';
-					 }
-					 ?>
-					 
+                    <a href="resources_blog.php">Common Advisory Extension</a>
                   </li>
+					 <?php } ?>
+                  
+                  
+
+
 				  <?php if($_SESSION['ADMIN_ROLE']!=1){?>
+               <li class="menu-item-has-children dropdown">
+               <a href="order_master.php" > Order Master</a>
+               </li>
 				   <li class="menu-item-has-children dropdown">
                      <a href="vendor_management.php" > Vendor Management</a>
                   </li>
@@ -91,13 +100,13 @@ function outputMenuItem($href, $text) {
                   <li class="menu-item-has-children dropdown">
                      <a href="weather.php" > Weather Updates</a>
                   </li> 
-                  <li class="menu-item-has-children dropdown">
-                    <a href="pest_view.php">Agri tips</a>
-                </li>
                 <li class="menu-item-has-children dropdown">
                     <a href="resources_blog.php">Common Advisory Extension</a>
                 </li>
 				  <?php } ?>
+              <li class="menu-item-has-children dropdown">
+                    <a href="agriNote_view.php">Write A Record</a>
+                </li>
                </ul>
             </div>
          </nav>
